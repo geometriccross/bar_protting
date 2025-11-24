@@ -1,0 +1,5 @@
+*.[ct]sv
+*.qz[av]
+.R*
+/renv
+temp.sh
