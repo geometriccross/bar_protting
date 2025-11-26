@@ -3,3 +3,4 @@
 .R*
 /renv
 temp.sh
+*.svg
