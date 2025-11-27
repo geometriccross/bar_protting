@@ -30,17 +30,15 @@ natural_sorted <- phyloseq_object %>%
     }
 
 
-p <- pseq %>%
-    ps_arrange("RawID") %>%
+composition_barplot <- phyloseq_object %>%
     comp_barplot(
         tax_level = "Genus",
         n_taxa = 32,
         bar_outline_colour = NA,
-        sample_order = "asis",
         sample_order = natural_sorted,
         label = "RawID"
     ) +
     coord_flip()
 
 
-ggsave("barplot.svg", plot = p, width = 10, height = 8, dpi = 300)
+ggsave("barplot.svg", plot = composition_barplot, width = 16, height = 9, dpi = 600)
