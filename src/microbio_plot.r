@@ -11,3 +11,24 @@ source("./src/q2obj.r")
 conflict_prefer("filter", "dplyr")
 conflict_prefer("lag", "dplyr")
 
+ps <- load_q2obj()
+
+
+# OTUテーブルを取得
+otu <- ps %>%
+    otu_table() %>%
+    as.data.frame() %>%
+    rownames_to_column("FeatureID")
+
+# 分類学的情報を取得
+tax <- ps %>%
+    tax_table() %>%
+    as.data.frame() %>%
+    select("Genus") %>%
+    rownames_to_column("FeatureID")
+
+
+# 結合して表示
+df <- otu %>%
+    left_join(tax, by = "FeatureID")
+
