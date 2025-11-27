@@ -2,6 +2,7 @@ library(tidyverse)
 library(phyloseq)
 library(microViz)
 library(qiime2R)
+library(gtools)
 
 
 # QIIME2メタデータの読み込みとクリーニング（型定義行の削除とID列の修正）
@@ -10,6 +11,7 @@ clean_sample_data <- read_tsv("./q2objs/metadata.tsv", comment = "") %>%
     filter(!str_detect(SampleID, "^#q2:types|^categorical|^numeric")) %>%
     column_to_rownames("SampleID") %>%
     sample_data()
+
 
 # Feature table等の読み込み、分類名の修正、メタデータの結合
 phyloseq_object <- qza_to_phyloseq(
