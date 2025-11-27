@@ -26,6 +26,16 @@ read_abundance <- function(df, key = NULL) {
 }
 
 
+relative_abundance <- function(df, key = NULL) {
+    abundance <- read_abundance(df, key)
+    total_abundance <- read_abundance(df, "*")
+
+    bind_cols(abundance, total_abundance) %>%
+        mutate(Ratio = Abundance...2 / Abundance...4) %>%
+        select(SampleID = SampleID...1, Ratio)
+}
+
+
 ps <- load_q2obj()
 
 
@@ -46,3 +56,6 @@ tax <- ps %>%
 df <- otu %>%
     left_join(tax, by = "FeatureID")
 
+relative_abundance(df, "Bartonella") %>%
+    arrange(desc(Ratio)) %>%
+    print()
