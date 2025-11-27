@@ -38,7 +38,8 @@ composition_barplot <- phyloseq_object %>%
         n_taxa = 32,
         bar_outline_colour = NA,
         sample_order = natural_sorted,
-        label = "RawID"
+        label = "RawID",
+        bar_width = 0.9,
     ) +
     coord_flip()
 
