@@ -12,11 +12,17 @@ conflict_prefer("filter", "dplyr")
 conflict_prefer("lag", "dplyr")
 
 
-read_abundance <- function(df, genus_name) {
-    df %>%
-        filter(Genus == genus_name) %>%
+read_abundance <- function(df, key = NULL) {
+    result <- df
+
+    if (!(is.null(key) || key == "*")) {
+        result <- result %>% filter(Genus == key)
+    }
+
+    result %>%
         select(-FeatureID, -Genus) %>%
-        colSums()
+        colSums() %>%
+        enframe(name = "SampleID", value = "Abundance")
 }
 
 
@@ -35,7 +41,6 @@ tax <- ps %>%
     as.data.frame() %>%
     select("Genus") %>%
     rownames_to_column("FeatureID")
-
 
 # 結合して表示
 df <- otu %>%
