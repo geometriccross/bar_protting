@@ -33,6 +33,7 @@ relative_abundance <- function(a, b) {
         select(SampleID, Ratio)
 }
 
+
 get_ratio <- function(df, key = NULL) {
     relative_abundance(
         read_abundance(df, key),
@@ -50,6 +51,20 @@ combine_ratio_dfs <- function(ratio_list, genus_names) {
         ~ .x %>% mutate(Genus = .y)
     )
     return(combined)
+}
+
+
+# 統計情報を計算する関数（平均、標準偏差、標準誤差、サンプル数）
+calculate_stats <- function(ratio_df) {
+    ratio_df %>%
+        group_by(Genus) %>%
+        summarise(
+            n = n(),
+            mean_ratio = mean(Ratio, na.rm = TRUE),
+            sd_ratio = sd(Ratio, na.rm = TRUE),
+            se_ratio = sd_ratio / sqrt(n),
+            .groups = "drop"
+        )
 }
 
 
