@@ -68,6 +68,67 @@ calculate_stats <- function(ratio_df) {
 }
 
 
+# エラーバー付き散布図を作成する関数
+plot_ratio_scatter <- function(ratio_df,
+                               title = "Relative Abundance by Genus",
+                               x_label = "Genus",
+                               y_label = "Relative Abundance (Ratio)",
+                               point_size = 3,
+                               point_alpha = 0.5,
+                               error_bar_width = 0.2) {
+    # 統計情報を計算
+    stats_df <- calculate_stats(ratio_df)
+
+    # プロット作成
+    p <- ggplot() +
+        geom_jitter(
+            data = ratio_df,
+            aes(x = Genus, y = Ratio, color = Genus),
+            width = 0.1,
+            height = 0,
+            alpha = point_alpha,
+            size = point_size
+        ) +
+        # 平均値
+        geom_point(
+            data = stats_df,
+            aes(x = Genus, y = mean_ratio, color = Genus),
+            size = point_size * 2,
+            shape = 20 # ●
+        ) +
+        geom_errorbar(
+            data = stats_df,
+            aes(
+                x = Genus,
+                ymin = mean_ratio - se_ratio,
+                ymax = mean_ratio + se_ratio,
+                color = Genus
+            ),
+            width = error_bar_width,
+            linewidth = 1
+        ) +
+        labs(
+            title = title,
+            x = x_label,
+            y = y_label
+        ) +
+        theme_bw() +
+        theme(
+            plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+            axis.text.x = element_text(angle = 90, hjust = 1, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title = element_text(size = 13, face = "bold"),
+            legend.position = "right",
+            legend.title = element_text(face = "bold"),
+            panel.grid.major = element_line(color = "grey90"),
+            panel.grid.minor = element_line(color = "grey95")
+        )
+
+    return(p)
+}
+
+
+
 ps <- load_q2obj()
 
 
@@ -87,6 +148,8 @@ tax <- ps %>%
 # 結合して表示
 df <- otu %>%
     left_join(tax, by = "FeatureID")
+
+
 
 ratio_df <- get_ratio(df, key = "Bartonella")
 print(ratio_df)
