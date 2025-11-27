@@ -22,6 +22,12 @@ phyloseq_object <- qza_to_phyloseq(
     merge_phyloseq(clean_sample_data)
 
 
+natural_sorted <- phyloseq_object %>%
+    sample_data() %>%
+    as.data.frame() %>%
+    {
+        rownames(.)[mixedorder(.$RawID)] # RawIDを対象とする
+    }
 
 print(colnames(sample_data(pseq)))
 
@@ -32,6 +38,7 @@ p <- pseq %>%
         n_taxa = 32,
         bar_outline_colour = NA,
         sample_order = "asis",
+        sample_order = natural_sorted,
         label = "RawID"
     ) +
     coord_flip()
