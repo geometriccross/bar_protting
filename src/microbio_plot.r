@@ -11,6 +11,15 @@ source("./src/q2obj.r")
 conflict_prefer("filter", "dplyr")
 conflict_prefer("lag", "dplyr")
 
+
+genus_abundance <- function(df, genus_name) {
+    df %>%
+        filter(Genus == genus_name) %>%
+        select(-FeatureID, -Genus) %>%
+        colSums()
+}
+
+
 ps <- load_q2obj()
 
 
