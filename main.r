@@ -29,7 +29,6 @@ natural_sorted <- phyloseq_object %>%
         rownames(.)[mixedorder(.$RawID)] # RawIDを対象とする
     }
 
-print(colnames(sample_data(pseq)))
 
 p <- pseq %>%
     ps_arrange("RawID") %>%
