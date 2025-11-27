@@ -6,7 +6,7 @@ library(gtools)
 
 source("./src/q2obj.r")
 
-phyloseq_object <- load_q2obj()
+phyloseq_object <- load_q2obj() %>% tax_tweak()
 
 natural_sorted <- phyloseq_object %>%
     sample_data() %>%

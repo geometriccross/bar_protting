@@ -19,7 +19,11 @@ load_q2obj <- function() {
         features = "./q2objs/common_biology_free_table.qza",
         taxonomy = "./q2objs/common_biology_free_classification.qza",
         tree     = "./q2objs/biology_free_rooted_tree.qza"
-    ) %>%
+    )
+}
+
+tax_tweak <- function(phyloseq_object) {
+    phyloseq_object %>%
         tax_fix() %>%
         tax_fix(unknowns = c("uncultured")) %>%
         merge_phyloseq(clean_sample_data())
